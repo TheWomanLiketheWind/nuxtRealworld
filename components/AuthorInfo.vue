@@ -7,7 +7,7 @@
       <span class="date">{{articlesInfo.createdAt | data('MMM DD,YYYY')}}</span>
     </div>
 
-    <div v-if="user">
+    <div v-if="user.username === articlesInfo.author.username">
       <nuxt-link class="btn btn-outline-secondary btn-sm"
                  :to="{path: '/Edit', query: {slug: articlesInfo.slug}}">
         <i class="ion-edit"></i> Edit Article
@@ -47,6 +47,9 @@ export default {
   },
   computed: {
     ...mapState(['user'])
+  },
+  mounted() {
+    console.log(this.user)
   },
   methods: {
     async delArticle(e) {

@@ -22,7 +22,7 @@
                      type="text"
                      placeholder="Your Name"
                      v-model="user.username"
-                     minlength="8"
+                     minlength="12"
                      required>
             </fieldset>
             <fieldset class="form-group">
@@ -73,12 +73,11 @@ export default {
     }
   },
   methods: {
-    // 登录提交
+    // 注册提交
     async onSubmit() {
       try {
         const { data } = await RegisterApi({ user: this.user })
-        console.log(data)
-        this.$router.push('/')
+        this.$router.push('/Login')
       } catch ({ errors }) {
         this.errors = errors
       }
