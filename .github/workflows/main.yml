@@ -1,8 +1,8 @@
 name: Publish And Deploy Demo
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - master
 
 jobs:
   build-and-deploy:
@@ -32,7 +32,7 @@ jobs:
         draft: false
         prerelease: false
 
-    # 上传构建结果到 Release
+    # 上传构建结果到Release
     - name: Upload Release Asset
       id: upload-release-asset
       uses: actions/upload-release-asset@master
@@ -54,7 +54,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd /home/realworld_nuxt
-          wget https://github.com/TheWomanLiketheWind/nuxt-realworld/releases/latest/download/release.tgz -O release.tgz
+          wget https://github.com/TheWomanLiketheWind/nuxtRealworld/releases/latest/download/release.tgz -O release.tgz
           tar zxvf release.tgz
           npm install --production
           pm2 reload pm2.config.json
