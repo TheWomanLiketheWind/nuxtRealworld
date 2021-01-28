@@ -23,6 +23,10 @@ const getArticlesFeedApi = (parmars) => request.get(`/articles/feed${formatGetUr
 const getArticlesInfoApi = (parmars) => request.get(`/articles/${parmars}`)
 // 新增文章
 const setArticlesApi = (parmars) => request.post(`/articles`, parmars)
+// 更新文章
+const uploadArticlesApi = (parmars) => request.put(`/articles/${parmars.slug}`, parmars)
+// 删除文章
+const delArticlesApi = (slug) => request.delete(`/articles/${slug}`)
 // Tag 
 const getTagsApi = () => request.get(`/tags`)
 // 点赞
@@ -49,6 +53,8 @@ export {
   getArticlesFeedApi,
   getArticlesInfoApi,
   setArticlesApi,
+  uploadArticlesApi,
+  delArticlesApi,
   getTagsApi,
   setFavoriteApi,
   delFavoriteApi,

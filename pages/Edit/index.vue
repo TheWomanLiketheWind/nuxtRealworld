@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { setArticlesApi } from '../../api'
+import { setArticlesApi, getArticlesInfoApi, uploadArticlesApi } from '../../api'
 
 export default {
   middleware: 'authenticated',
@@ -79,6 +79,14 @@ export default {
       errors: []
     }
   },
+  async asyncData(content) {
+    if (content.route.query.slug) {
+      const { data } = await getArticlesInfoApi(content.route.query.slug)
+      return {
+        articleInfo: data.article
+      }
+    }
+  },
   methods: {
     // input change 事件
     addArticleTag(e) {
@@ -88,9 +96,12 @@ export default {
     // 提交信息
     async submitInfo() {
       this.disabled = true
+      const slug = this.$route.query.slug
       this.articleTag && this.articleInfo.tagList.push(this.articleTag)
+      const IsOwnArticle = slug ? uploadArticlesApi : setArticlesApi
+      const parmas = slug ? { article: this.articleInfo, slug: slug } : { article: this.articleInfo }
       try {
-        const { data } = await setArticlesApi({ article: this.articleInfo })
+        const { data } = await IsOwnArticle(parmas)
         this.$router.push(`/Article?slug=${data.article.slug}`)
       } catch (errors) {
         console.log(errors)

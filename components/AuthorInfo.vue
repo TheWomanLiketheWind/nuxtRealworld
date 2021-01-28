@@ -6,31 +6,59 @@
          class="author">{{articlesInfo.author.username}}</a>
       <span class="date">{{articlesInfo.createdAt | data('MMM DD,YYYY')}}</span>
     </div>
-    <button class="btn btn-sm"
-            :class="articlesInfo.author.following?'action-btn btn-secondary':'btn-outline-secondary'"
-            @click="onFollow(articlesInfo.author)">
-      <i class="ion-plus-round"></i>
-      &nbsp;
-      {{articlesInfo.author.following?'unFollow':'Follow'}} {{articlesInfo.author.username}}
-    </button>
 
-    <button class="btn btn-sm btn-outline-primary"
-            @click="onFavorite(articlesInfo)">
-      <i class="ion-heart"></i>
-      &nbsp;
-      Favorite Post <span class="counter">({{articlesInfo.favoritesCount}})</span>
-    </button>
+    <div v-if="user">
+      <nuxt-link class="btn btn-outline-secondary btn-sm"
+                 :to="{path: '/Edit', query: {slug: articlesInfo.slug}}">
+        <i class="ion-edit"></i> Edit Article
+      </nuxt-link>
+
+      <button class="btn btn-outline-danger btn-sm"
+              @click="delArticle(articlesInfo.slug)">
+        <i class="ion-trash-a"></i> Delete Article
+      </button>
+    </div>
+    <div v-else>
+      <button class="btn btn-sm"
+              :class="articlesInfo.author.following?'action-btn btn-secondary':'btn-outline-secondary'"
+              @click="onFollow(articlesInfo.author)">
+        <i class="ion-plus-round"></i>
+        &nbsp;
+        {{articlesInfo.author.following?'unFollow':'Follow'}} {{articlesInfo.author.username}}
+      </button>
+
+      <button class="btn btn-sm btn-outline-primary"
+              @click="onFavorite(articlesInfo)">
+        <i class="ion-heart"></i>
+        &nbsp;
+        Favorite Post <span class="counter">({{articlesInfo.favoritesCount}})</span>
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
-import { setFavoriteApi, delFavoriteApi, setProfilesFollowApi, delProfilesFollowApi } from '../api/index'
+import { setFavoriteApi, delFavoriteApi, setProfilesFollowApi, delProfilesFollowApi, delArticlesApi } from '../api/index'
+import { mapState } from 'vuex'
 
 export default {
   props: {
     articlesInfo: Object
   },
+  computed: {
+    ...mapState(['user'])
+  },
   methods: {
+    async delArticle(e) {
+      console.log('21212', e)
+
+      try {
+        const { data } = await delArticlesApi(e)
+        this.$router.push('/Profile')
+      } catch {
+        alert('删除失败')
+      }
+    },
     onFavorite(e) {
       if (e.favorited) {
         // 取消点赞
@@ -74,7 +102,7 @@ export default {
         this.setFollow(e)
       }
     },
-    // 点赞
+    // 收藏
     async setFollow(e) {
       e.followDisabled = true
       try {
@@ -85,7 +113,7 @@ export default {
       }
       e.followDisabled = false
     },
-    // 取消点赞
+    // 取消收藏
     async delFollow(e) {
       e.followDisabled = true
       try {
@@ -100,5 +128,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.article-meta {
+  display: flex;
+}
 </style>
