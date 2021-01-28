@@ -22,6 +22,7 @@
                      type="text"
                      placeholder="Your Name"
                      v-model="user.username"
+                     minlength="8"
                      required>
             </fieldset>
             <fieldset class="form-group">

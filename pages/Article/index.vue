@@ -58,8 +58,8 @@
               <a href=""
                  class="comment-author">{{item.author.username}}</a>
               <span class="date-posted">{{item.updatedAt | data('MMM DD, YYYY')}}</span>
-              <span class="mod-options">
-                <!-- <i class="ion-edit"></i> -->
+              <span class="mod-options"
+                    v-if="user.username === item.author.username">
                 <i class="ion-trash-a"
                    @click="delComments(articlesInfo.slug, item.id)"></i>
               </span>
@@ -77,12 +77,16 @@
 
 <script>
 import { getArticlesInfoApi, getCommentsApi, setCommentsApi, delCommentsApi } from '../../api'
+import { mapState } from 'vuex'
 
 export default {
   data() {
     return {
       textareaVal: ''
     }
+  },
+  computed: {
+    ...mapState(['user'])
   },
   // 进入页面前，先进入 middleware 操作
   middleware: 'authenticated',

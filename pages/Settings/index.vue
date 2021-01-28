@@ -72,10 +72,12 @@ export default {
   methods: {
     async updateUserInfo() {
       const { data } = await setUserInfoApi({ user: this.userInfo })
+      this.$store.commit('setUser', data.user)
       this.$router.push('/Profile')
     },
     logout() {
       Cookie.remove('user')
+      this.$store.commit('setUser', null)
       this.$router.push('/')
     }
   }

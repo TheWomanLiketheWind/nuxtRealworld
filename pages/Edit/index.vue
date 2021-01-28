@@ -68,12 +68,7 @@ export default {
   middleware: 'authenticated',
   data() {
     return {
-      articleInfo: {
-        title: '',
-        description: '',
-        body: '',
-        tagList: []
-      },
+      articleInfo: {},
       articleTag: '',
       disabled: false,
       errors: []
@@ -84,6 +79,15 @@ export default {
       const { data } = await getArticlesInfoApi(content.route.query.slug)
       return {
         articleInfo: data.article
+      }
+    } else {
+      return {
+        articleInfo: {
+          title: '',
+          description: '',
+          body: '',
+          tagList: []
+        }
       }
     }
   },

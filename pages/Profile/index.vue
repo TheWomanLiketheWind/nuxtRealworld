@@ -32,13 +32,13 @@
                 <nuxt-link class="nav-link"
                            exact
                            :class="{active: tabs === 'my'}"
-                           :to="{path: '/Profile', query: {type: 'my', page: 1}}">My Articles</nuxt-link>
+                           :to="{path: '/Profile', query: {tab: 'my', page: 1}}">My Articles</nuxt-link>
               </li>
               <li class="nav-item">
                 <nuxt-link class="nav-link"
                            exact
                            :class="{active: tabs === 'Favorited'}"
-                           :to="{path: '/Profile', query: {type: 'Favorited', page: 1}}">Favorited Articles</nuxt-link>
+                           :to="{path: '/Profile', query: {tab: 'Favorited', page: 1}}">Favorited Articles</nuxt-link>
               </li>
             </ul>
           </div>
